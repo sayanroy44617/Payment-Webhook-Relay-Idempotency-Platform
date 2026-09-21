@@ -7,7 +7,7 @@ services:
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_USER: username
-      POSTGRES_DB: database_name
+      POSTGRES_DB: payment
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
