@@ -11,10 +11,20 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U username -d database_name" ]
+      test: [ "CMD-SHELL", "pg_isready -U username -d payment" ]
       interval: 5s
       timeout: 5s
       retries: 5
+
+  migration:
+    build: .
+    command: alembic upgrade head
+    environment:
+      DATABASE_URL: postgresql+asyncpg://username:password@postgres:5432/payment
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   redis:
     image: redis:7.4-alpine
     container_name: redis_container
@@ -35,4 +45,3 @@ volumes:
     driver: local
   redis_data:
     driver: local
-
